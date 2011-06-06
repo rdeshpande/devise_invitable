@@ -290,4 +290,10 @@ class InvitableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'User.invite! should allow a user-specified message in the email' do
+    message = "This is a super-duper test."
+    user = User.invite!(:email => "valid@email.com", :custom_message => message)
+    mail = ActionMailer::Base.deliveries.first
+    assert_match message, mail.encoded
+  end
 end

@@ -21,7 +21,7 @@ module Devise
     module Invitable
       extend ActiveSupport::Concern
 
-      attr_accessor :skip_invitation
+      attr_accessor :skip_invitation, :custom_message
 
       included do
         include ::DeviseInvitable::Inviter
@@ -118,7 +118,9 @@ module Devise
         # Attempt to find a user by it's email. If a record is not found, create a new
         # user and send invitation to it. If user is found, returns the user with an
         # email already exists error.
-        # Attributes must contain the user email, other attributes will be set in the record
+        #
+        # Attributes must contain the user email and an optional message, 
+        # other attributes will be set in the record
         def invite!(attributes={}, invited_by=nil, &block)
           invitable = find_or_initialize_with_error_by(invite_key, attributes.delete(invite_key))
           invitable.attributes = attributes
